@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
-import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useEntriesContext } from "../hooks/useEntriesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 //components
-import WorkoutDetails from "../components/WorkoutDetails";
-import WorkoutForm from "../components/WorkoutForm";
+import EntryDetails from "../components/EntryDetails";
+import EntryForm from "../components/EntryForm";
 
 const Home = () => {
-  const { workouts, dispatch } = useWorkoutsContext();
+  const { entries, dispatch } = useEntriesContext();
   const { user } = useAuthContext();
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch(`/api/workouts?search=${search}`, {
+    const fetchEntries = async () => {
+      const response = await fetch(`/api/entries?search=${search}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -21,12 +21,12 @@ const Home = () => {
       const json = await response.json();
 
       if (response.ok) {
-        dispatch({ type: "SET_WORKOUTS", payload: json });
+        dispatch({ type: "SET_ENTRIES", payload: json });
       }
     };
 
     if (user) {
-      fetchWorkouts();
+      fetchEntries();
     }
   }, [dispatch, user, search]); // dependency array
 
@@ -40,13 +40,13 @@ const Home = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="workouts">
-        {workouts &&
-          workouts.map((workout) => (
-            <WorkoutDetails key={workout._id} workout={workout} />
+      <div className="entries">
+        {entries &&
+          entries.map((entry) => (
+            <EntryDetails key={entry._id} entry={entry} />
           ))}
       </div>
-      <WorkoutForm />
+      <EntryForm />
     </div>
   );
 };
@@ -56,52 +56,3 @@ export default Home;
 
 
 
-
-
-
-
-// import {useEffect} from 'react'
-// import {useWorkoutsContext} from '../hooks/useWorkoutsContext'
-// import {useAuthContext} from '../hooks/useAuthContext' 
-
-// //components
-// import WorkoutDetails from '../components/WorkoutDetails'
-// import WorkoutForm from '../components/WorkoutForm'
-
-// const Home = ()=>{
-//     const {workouts, dispatch} = useWorkoutsContext()
-//     const {user}=useAuthContext()
-
-//     useEffect(() =>{
-//         const fetchWorkouts = async()=>{
-//             const response = await fetch('/api/workouts', {
-//                 headers: {
-//                     'Authorization': `Bearer ${user.token}`
-//                 }
-//             })
-//             const json = await response.json()
-
-//             if (response.ok){
-//                 dispatch({type: 'SET_WORKOUTS', payload: json})
-//                 //setWorkouts(json)
-//             }
-//         }
-//         if (user){
-//             fetchWorkouts()
-//         }
-        
-
-//     }, [dispatch, user])  //dependency array
-
-//     return(
-//         <div className="home">
-//         <div className="workouts">
-//             {workouts && workouts.map((workout)=>(
-//                 <WorkoutDetails key={workout._id} workout={workout}/>
-//             ))}
-//         </div>
-//         <WorkoutForm />
-//         </div>
-//     )
-// }
-// export default Home;
