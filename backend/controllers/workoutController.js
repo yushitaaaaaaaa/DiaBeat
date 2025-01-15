@@ -1,16 +1,7 @@
 const Workout = require('../models/WorkoutModel')
 const mongoose = require('mongoose')
 
-//get all workouts
-// const getWorkouts=async(req,res)=>{
-
-//     const user_id = req.user._id
-
-//     const workouts = await Workout.find({user_id}).sort({createdAt: -1})
-
-//     res.status(200).json(workouts)
-// }
-const getWorkouts = async (req, res) => {
+const getEntries = async (req, res) => {
     const user_id = req.user._id;
     const { search } = req.query; 
 
@@ -26,7 +17,7 @@ const getWorkouts = async (req, res) => {
 
 
 //get single workout
-const getWorkout=async(req,res)=>{
+const getEntry=async(req,res)=>{
     const {id} = req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
@@ -45,7 +36,7 @@ const getWorkout=async(req,res)=>{
 
 
 //create new workout
-const createWorkout = async (req, res) =>{
+const createEntry = async (req, res) =>{
     const{title, load, reps}=req.body
 
     let emptyFields=[]
@@ -74,7 +65,7 @@ const createWorkout = async (req, res) =>{
 }
 
 //delete a workout
-const deleteWorkout = async(req,res)=>{
+const deleteEntry = async(req,res)=>{
     const{id}=req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
@@ -91,14 +82,14 @@ const deleteWorkout = async(req,res)=>{
 
 
 //update a workout
-const updateWorkout = async (req, res) => {
+const updateEntry = async (req, res) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'No such workout' });
     }
 
-    // Filter out user_id from req.body to avoid overwriting it
+    
     const updateFields = { ...req.body };
     delete updateFields.user_id;  // Prevent updating the user_id field
 
@@ -115,9 +106,9 @@ const updateWorkout = async (req, res) => {
 
 
 module.exports={
-    getWorkouts,
-    getWorkout,
-    createWorkout,
-    deleteWorkout,
-    updateWorkout
+    getEntries,
+    getEntry,
+    createEntry,
+    deleteEntry,
+    updateEntry
 }
