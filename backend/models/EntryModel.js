@@ -3,15 +3,15 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const entrySchema = new Schema({
 
-    title: {
+    timewhen: {
         type: String, 
         required:  true
     },
-    reps: {
+    bloodsugar: {
         type: Number, 
         required: true
     },
-    load: {
+    insulin: {
         type: Number,
         required: true,
     },
