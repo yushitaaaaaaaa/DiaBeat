@@ -1,4 +1,4 @@
-const Workout = require('../models/WorkoutModel')
+const Entry = require('../models/WorkoutModel')
 const mongoose = require('mongoose')
 
 const getEntries = async (req, res) => {
@@ -10,32 +10,32 @@ const getEntries = async (req, res) => {
         query.title = { $regex: search, $options: 'i' };  
     }
 
-    const workouts = await Workout.find(query).sort({ createdAt: -1 });
+    const entries = await Entry.find(query).sort({ createdAt: -1 });
 
-    res.status(200).json(workouts);
+    res.status(200).json(entries);
 };
 
 
-//get single workout
+//get single entry
 const getEntry=async(req,res)=>{
     const {id} = req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such workout'})
+        return res.status(404).json({error: 'No such entry'})
     }
 
-    const workout=await Workout.findById(id)
+    const entry=await Entry.findById(id)
 
-    if (!workout) {
-        return res.status(404).json({error: 'No such workout'})
+    if (!entry) {
+        return res.status(404).json({error: 'No such entry'})
     }
 
-    res.status(200).json(workout)
+    res.status(200).json(entry)
 }
 
 
 
-//create new workout
+//create new entry
 const createEntry = async (req, res) =>{
     const{title, load, reps}=req.body
 
@@ -57,49 +57,49 @@ const createEntry = async (req, res) =>{
     //add doc to db
     try{
         const user_id=req.user._id
-        const workout= await Workout.create({title, load, reps, user_id})
-        res.status(200).json(workout)
+        const entry= await Entry.create({title, load, reps, user_id})
+        res.status(200).json(entry)
     } catch(error){
         res.status(400).json({error: error.message})
     }
 }
 
-//delete a workout
+//delete a entry
 const deleteEntry = async(req,res)=>{
     const{id}=req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such workout'})
+        return res.status(404).json({error: 'No such entry'})
     }
 
-    const workout=await Workout.findOneAndDelete({_id: id})
+    const entry=await Entry.findOneAndDelete({_id: id})
 
-    if (!workout) {
-        return res.status(404).json({error: 'No such workout'})
+    if (!entry) {
+        return res.status(404).json({error: 'No such entry'})
     }
-    res.status(200).json(workout)
+    res.status(200).json(entry)
 }
 
 
-//update a workout
+//update a entry
 const updateEntry = async (req, res) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'No such workout' });
+        return res.status(404).json({ error: 'No such entry' });
     }
 
     
     const updateFields = { ...req.body };
     delete updateFields.user_id;  // Prevent updating the user_id field
 
-    const workout = await Workout.findOneAndUpdate({ _id: id }, updateFields, { new: true });
+    const entry = await Entry.findOneAndUpdate({ _id: id }, updateFields, { new: true });
 
-    if (!workout) {
-        return res.status(404).json({ error: 'No such workout' });
+    if (!entry) {
+        return res.status(404).json({ error: 'No such entry' });
     }
 
-    res.status(200).json(workout);
+    res.status(200).json(entry);
 };
 
 
