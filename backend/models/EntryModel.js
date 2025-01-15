@@ -23,4 +23,4 @@ const entrySchema = new Schema({
 
 module.exports = mongoose.model('Entry', entrySchema)
 
-//workoutSchema.find()
+//entrySchema.find()
