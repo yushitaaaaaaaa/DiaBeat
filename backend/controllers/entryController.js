@@ -1,4 +1,4 @@
-const Entry = require('../models/WorkoutModel')
+const Entry = require('../models/EntryModel')
 const mongoose = require('mongoose')
 
 const getEntries = async (req, res) => {
